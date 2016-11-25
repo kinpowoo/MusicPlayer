@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:gravity="center"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <ImageButton
+            android:padding="10dp"
+            android:background="@color/grey"
+            android:src="@drawable/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+<com.example.anzhuo.normalpractice.ClearEditText
+    android:id="@+id/cet_search"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+   </LinearLayout>
+    <ExpandableListView
+        android:id="@+id/lv_songList"
+        android:dividerHeight="2dp"
+        android:divider="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/ib_songList_menu"
+            android:layout_margin="5dp"
+            android:background="@drawable/menu_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

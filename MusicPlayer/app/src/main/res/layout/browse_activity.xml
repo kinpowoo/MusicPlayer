@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:background="@color/white"
+            android:padding="5dp"
+            android:id="@+id/ib_project_main_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"
+            />
+        <TextView
+            android:id="@+id/tv_project_main_path"
+            android:paddingLeft="20dp"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+           android:textSize="20dp"
+            />
+        <ImageButton
+            android:id="@+id/ib_directory_choose"
+            android:src="@drawable/choose_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+<ListView
+    android:id="@+id/lv_project_main_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</ListView>
+</LinearLayout>

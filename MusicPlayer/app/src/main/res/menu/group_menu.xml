@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group>
+<item android:id="@+id/group_rename"
+    android:title="重命名"
+    android:visible="false"
+    android:orderInCategory="0"/>
+    <item android:id="@+id/group_delete"
+        android:title="删除"
+        android:visible="false"
+        android:orderInCategory="1"/>
+    <item android:id="@+id/group_move"
+        android:title="移动到"
+        android:visible="false"
+        android:orderInCategory="2"/>
+</group>
+</menu>
