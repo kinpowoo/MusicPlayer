@@ -29,7 +29,7 @@ public class MyImageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.rotate(50);
+        canvas.rotate(40);
         Paint paint=new Paint();
         canvas.save();
         Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.index_pin);

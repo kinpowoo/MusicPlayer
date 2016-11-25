@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
     MyService myService;
     ToggleButton toggleButton;
     ToggleButton loopChoice;
-    int songPlayPosition = 1;
+    int songPlayPosition =1;
     int totalLength;
     SharedPreferences sp;
     AudioManager audioManager;
