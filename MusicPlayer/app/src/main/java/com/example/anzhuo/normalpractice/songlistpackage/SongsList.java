@@ -240,6 +240,7 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
                             values.put("songName",songName);
                             values.put("songPath",songPath);
                             newDatabase.insert("musicFolder",null,values);
+                            values.clear();
                         }
                     }
                 }
