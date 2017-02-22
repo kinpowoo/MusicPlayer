@@ -5,8 +5,8 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.example.anzhuo.normalpractice"
-        minSdkVersion 16
-        targetSdkVersion 21
+        minSdkVersion 19
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -27,4 +27,14 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.1@aar'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.alibaba:fastjson:1.2.24'
+    compile 'com.facebook.fresco:fresco:1.1.0'
+    compile 'com.facebook.fresco:animated-gif:0.12.0'
+
+    compile files('libs/json-lib-2.1.jar')
+    compile files('libs/commons-collections-3.2.jar')
+    compile files('libs/ezmorph-1.0.6.jar')
+    compile files('libs/commons-lang-2.5.jar')
 }
+
+println("I'm now compiling with gradle " + project.gradle.gradleVersion);

@@ -7,17 +7,13 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:gravity="center"
-        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-        <ImageButton
-            android:padding="10dp"
-            android:background="@color/grey"
-            android:src="@drawable/search_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 <com.example.anzhuo.normalpractice.ClearEditText
     android:id="@+id/cet_search"
+    android:background="@null"
+    android:padding="8dp"
+    android:drawablePadding="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
    </LinearLayout>

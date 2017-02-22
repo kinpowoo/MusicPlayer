@@ -30,11 +30,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.example.anzhuo.normalpractice.songlistpackage.SongsList;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +125,7 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
         viewPin.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         viewPin.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
         viewChip.setOnClickListener(this);
-        lyrics.setText("i been always love you,even that you have already don't love me ,but i just can't forget you");
+        lyrics.setText("");
         list = new ArrayList<View>();
         list.add(viewAnimation);
         list.add(viewLyrics);

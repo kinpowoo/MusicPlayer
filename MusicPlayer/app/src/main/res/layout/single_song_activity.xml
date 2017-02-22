@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <com.facebook.drawee.view.SimpleDraweeView
+       xmlns:fresco="http://schemas.android.com/apk/res-auto"
+       android:id="@+id/sdv_songInfo_album_photo"
+       android:layout_margin="10dp"
+       android:layout_width="180dp"
+       android:layout_height="180dp" />
+   <TextView
+       android:id="@+id/tv_songInfo_songName"
+       android:layout_toRightOf="@+id/sdv_songInfo_album_photo"
+       android:layout_alignTop="@+id/sdv_songInfo_album_photo"
+       android:layout_marginRight="20dp"
+       android:layout_marginLeft="8dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_songInfo_singer"
+        android:layout_below="@+id/tv_songInfo_songName"
+        android:layout_alignLeft="@+id/tv_songInfo_songName"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_songInfo_albumName"
+        android:layout_below="@+id/tv_songInfo_singer"
+        android:layout_alignLeft="@+id/tv_songInfo_singer"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_songInfo_companyName"
+        android:layout_below="@+id/tv_songInfo_albumName"
+        android:layout_alignLeft="@+id/tv_songInfo_albumName"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_songInfo_publishTime"
+        android:layout_below="@+id/tv_songInfo_companyName"
+        android:layout_alignLeft="@+id/tv_songInfo_companyName"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_songInfo_play"
+        android:layout_below="@+id/sdv_songInfo_album_photo"
+        android:layout_marginLeft="40dp"
+        android:text="play"
+        android:textSize="15dp"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

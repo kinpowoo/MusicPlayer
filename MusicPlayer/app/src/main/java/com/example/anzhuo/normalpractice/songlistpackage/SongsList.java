@@ -21,6 +21,7 @@ import android.widget.PopupMenu;
 
 import com.example.anzhuo.normalpractice.ClearEditText;
 import com.example.anzhuo.normalpractice.R;
+import com.example.anzhuo.normalpractice.SearchActivity;
 import com.example.anzhuo.normalpractice.browsesystemfiles.BrowseFileActivity;
 
 import java.io.File;
@@ -281,7 +282,9 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
                       Intent intent=new Intent(SongsList.this, BrowseFileActivity.class);
                       startActivity(intent);
                       break;
-
+                  case R.id.onlineSearch:
+                      startActivity(new Intent(SongsList.this, SearchActivity.class));
+                      break;
               }
                 return false;
             }

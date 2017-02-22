@@ -17,7 +17,8 @@ import com.example.anzhuo.normalpractice.R;
 
 public class ClearEditText extends EditText implements  
         OnFocusChangeListener, TextWatcher {
-    private Drawable mClearDrawable; 
+    private Drawable mClearDrawable;
+    private Drawable mSearchDrawable;
  
     public ClearEditText(Context context) { 
     	this(context, null); 
@@ -34,13 +35,16 @@ public class ClearEditText extends EditText implements
     
     
     private void init() {
-    	mClearDrawable = getCompoundDrawables()[2]; 
+    	mClearDrawable = getCompoundDrawables()[2];
         if (mClearDrawable == null) { 
         	mClearDrawable = getResources() 
-                    .getDrawable(R.drawable.cancel);
-        } 
-        mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight()); 
-        setClearIconVisible(false); 
+                    .getDrawable(R.drawable.delete);
+        }
+
+        mSearchDrawable = getResources().getDrawable(R.drawable.search_icon);
+        mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
+        mSearchDrawable.setBounds(0, 0,mSearchDrawable.getIntrinsicWidth(),mSearchDrawable.getIntrinsicHeight());
+        setClearIconVisible(false);
         setOnFocusChangeListener(this); 
         addTextChangedListener(this); 
     } 
@@ -75,8 +79,8 @@ public class ClearEditText extends EditText implements
 
     protected void setClearIconVisible(boolean visible) { 
         Drawable right = visible ? mClearDrawable : null; 
-        setCompoundDrawables(getCompoundDrawables()[0], 
-                getCompoundDrawables()[1], right, getCompoundDrawables()[3]); 
+        setCompoundDrawables(mSearchDrawable, getCompoundDrawables()[1],
+                right, getCompoundDrawables()[3]);
     } 
      
 
