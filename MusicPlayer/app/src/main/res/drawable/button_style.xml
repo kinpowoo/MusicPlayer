@@ -9,6 +9,6 @@
     android:centerColor="@color/tinypink"
     android:endColor="@color/brown"
     android:startColor="@color/green"
-    android:gradientRadius="20dp"
+    android:gradientRadius="20"
     android:type="linear"/>
 </shape>
