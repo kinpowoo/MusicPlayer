@@ -100,6 +100,11 @@ public class FileAdapter extends BaseAdapter {
                 viewHolder.imageView.setTag("emptyFolder");
                 viewHolder.textView.setText(fileType.getFileName());
                 break;
+            case R.drawable.music:
+                viewHolder.imageView.setImageResource(fileType.getImage());
+                viewHolder.imageView.setTag("song");
+                viewHolder.textView.setText(fileType.getFileName());
+                break;
             default:
                 viewHolder.textView.setText(fileType.getFileName());
                 viewHolder.imageView.setImageResource(fileType.getImage());

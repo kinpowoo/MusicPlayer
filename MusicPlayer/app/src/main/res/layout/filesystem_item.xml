@@ -13,6 +13,8 @@
         android:id="@+id/tv_project_item_text"
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:textSize="22sp"
+        android:textColor="@color/black"
         android:layout_height="wrap_content" />
     <CheckBox
         android:id="@+id/cb_project_item_choose"

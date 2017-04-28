@@ -1,42 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-<LinearLayout
-    android:id="@+id/linearlayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <com.example.anzhuo.normalpractice.ClearEditText
-        android:id="@+id/search_tab"
-        android:layout_width="0dp"
-        android:paddingLeft="8dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="4dp"
-        android:paddingRight="8dp"
-        android:drawablePadding="10dp"
-        android:gravity="center_vertical"
-        android:background="@null"
-        android:layout_weight="1"
-        android:singleLine="true"
-        android:layout_height="40dp" />
-
-    <TextView
-        android:id="@+id/search_confirm"
-        android:layout_toRightOf="@id/search_tab"
-        android:layout_width="80dp"
-        android:gravity="center"
-        android:text="search"
-        android:paddingLeft="2dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="4dp"
-        android:paddingRight="2dp"
-        android:background="@null"
-        android:textSize="16dp"
-        android:layout_height="28dp" />
-</LinearLayout>
     <ListView
         android:layout_below="@+id/linearlayout"
         android:id="@+id/listview"
@@ -44,4 +13,40 @@
         android:dividerHeight="4dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <com.example.anzhuo.normalpractice.ClearEditText
+            android:id="@+id/search_tab"
+            android:layout_width="0dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="8dp"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/search_confirm"
+            android:layout_toRightOf="@id/search_tab"
+            android:layout_width="80dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="search"
+            android:textColor="@color/black"
+            android:paddingLeft="2dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="2dp"
+            android:textSize="16dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </RelativeLayout>

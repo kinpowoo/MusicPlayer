@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -38,7 +39,7 @@ public class BrowseFileActivity extends Activity implements AdapterView.OnItemCl
     SQLiteDatabase saveDirectory;
     FileAdapter fileAdapter;
     ArrayList<String> sendDir;
-    List<FileType>  database=new ArrayList<>();
+    List<FileType>  database=new ArrayList<FileType>();
     String state= Environment.getExternalStorageState();
     File rootFile=Environment.getExternalStorageDirectory();
     String[] fileTypes={"xml","txt","lrc","pdf","zip","rar","pptx","apk","png","jpeg","jpg","gif","mp3","wav","flac","wmv","aac","mp4","3gp","rmvb","avi","wma","rm","flash"};
@@ -63,7 +64,7 @@ public class BrowseFileActivity extends Activity implements AdapterView.OnItemCl
         chooseButton= (ImageButton) findViewById(R.id.ib_directory_choose);
         listView.setOnItemClickListener(this);
         fileAdapter=new FileAdapter(this,database,saveDirectory);
-        sendDir=new ArrayList<>();
+        sendDir=new ArrayList<String>();
         scanFile(rootFile);
         listView.setAdapter(fileAdapter);
         chooseButton.setOnClickListener(this);
@@ -85,35 +86,37 @@ public class BrowseFileActivity extends Activity implements AdapterView.OnItemCl
                         contentValues.put("isChecked",-1);
                         saveDirectory.insert("directories",null,contentValues);
                         contentValues.clear();
-                        if(file.list().length>0){
+                        if(file!=null && file.list().length>0){
                             FileType fileType = new FileType();
                             fileType.setImage(R.drawable.folder_full);
                             fileType.setFileName(file.getName());
                             fileType.setFilePath(file.getPath());
+                            fileType.setType(2);
                             database.add(fileType);
-                            fileAdapter.notifyDataSetChanged();
                         } else{
                             FileType fileType = new FileType();
                             fileType.setImage(R.drawable.folder);
                             fileType.setFileName(file.getName());
                             fileType.setFilePath(file.getPath());
                             database.add(fileType);
-                            fileAdapter.notifyDataSetChanged();
                         }
+                        fileAdapter.notifyDataSetChanged();
                     }else{
                         String fileName = file.getName();
                         String fileParts = fileName.substring(fileName.lastIndexOf(".") + 1);
                        for(int i=0;i<fileTypes.length;i++){
                            if(fileParts.equals(fileTypes[i])){
                                ContentValues contentValues=new ContentValues();
-                               contentValues.put("dirPath",file.getPath());
+                               contentValues.put("dirPath",file.getParentFile().getPath());
+                               Log.d("addedfileParent",file.getParentFile().getPath());
                                contentValues.put("isChecked",-1);
                                saveDirectory.insert("directories",null,contentValues);
                                contentValues.clear();
                                FileType fileType=new FileType();
                                fileType.setImage(typeIcon[i]);
                                fileType.setFileName(fileName);
-                               fileType.setFilePath(file.getPath());
+                               fileType.setType(0);
+                               fileType.setFilePath(file.getParentFile().getPath());
                                database.add(fileType);
                                fileAdapter.notifyDataSetChanged();
                            }
@@ -149,8 +152,13 @@ public class BrowseFileActivity extends Activity implements AdapterView.OnItemCl
                 case "emptyFolder":
                     Toast.makeText(this,"该文件夹为空", Toast.LENGTH_SHORT).show();
                     break;
+                case "song":
+                    Log.d("songname",fileName);
+                    Uri uri = Uri.parse("file:///"+currentPath+File.separator+fileName);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(uri, "audio/*");
+                    startActivity(intent);
                 default:
-                    Toast.makeText(this, "无法打开该类型文件 ", Toast.LENGTH_SHORT).show();
             }
         }else{
             Toast.makeText(this,"该文件夹为空",Toast.LENGTH_SHORT).show();
@@ -163,11 +171,13 @@ public class BrowseFileActivity extends Activity implements AdapterView.OnItemCl
         switch (v.getId()){
             case R.id.ib_directory_choose:
                 if(saveDirectory!=null){
-                    Cursor c=saveDirectory.rawQuery("select * from directories",null);
+                    Cursor c=saveDirectory.rawQuery("select dirPath,isChecked from directories",null);
                     if(c!=null) {
                         while (c.moveToNext()) {
                         int flag=c.getInt(c.getColumnIndex("isChecked"));
                         if(flag==1){
+                            Log.d("addedCategories",c.getString(c.getColumnIndex("dirPath")));
+
                             String dir=c.getString(c.getColumnIndex("dirPath"));
                             sendDir.add(dir);
                         }
@@ -185,9 +195,13 @@ public class BrowseFileActivity extends Activity implements AdapterView.OnItemCl
                 if(file.exists()){
                     String parentPath=file.getParent();
                     File parentFile=new File(parentPath);
-                    saveDirectory.delete("directories","_id>?",new String[]{"0"});
-                    database.clear();
-                    scanFile(parentFile);
+                    if(currentPath.equals("/storage/emulated/")){
+                     Toast.makeText(this,"已是根目录！",Toast.LENGTH_SHORT).show();
+                    }else {
+                        saveDirectory.delete("directories", "_id>?", new String[]{"0"});
+                        database.clear();
+                        scanFile(parentFile);
+                    }
                 }
             break;
         }

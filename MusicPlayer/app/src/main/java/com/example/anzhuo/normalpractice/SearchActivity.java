@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SearchActivity extends Activity implements View.OnClickListener,TextWatcher{
     private ClearEditText songName;
-    private TextView searchButton;
+    private Button searchButton;
     private ListView listView;
     List<SearchResult.ResultBean.SongsBean> list;
     SearchAdapter adapter;
@@ -32,12 +32,12 @@ public class SearchActivity extends Activity implements View.OnClickListener,Tex
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
         songName= (ClearEditText) findViewById(R.id.search_tab);
-        searchButton= (TextView) findViewById(R.id.search_confirm);
+        searchButton= (Button) findViewById(R.id.search_confirm);
         listView= (ListView) findViewById(R.id.listview);
         songName.addTextChangedListener(this);
         searchButton.setOnClickListener(this);
 
-        list=new ArrayList<>();
+        list=new ArrayList<SearchResult.ResultBean.SongsBean>();
         adapter=new SearchAdapter(this,list);
         listView.setAdapter(adapter);
     }
@@ -80,8 +80,10 @@ public class SearchActivity extends Activity implements View.OnClickListener,Tex
             if(list.size()>0){
                 list.clear();
             }
-            list.addAll(data);
-            adapter.notifyDataSetChanged();
+            if(data!=null) {
+                list.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 

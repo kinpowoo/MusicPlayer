@@ -13,6 +13,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -37,7 +38,6 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
     File[] rootFileInit={rootFileMusic};
     ProgressDialog progressDialog;
     SQLiteDatabase existSong;
-    private int FLAG=-1;
     ExpandableListView listView;
     ClearEditText searchArea;
     SongAdapter songAdapter;
@@ -48,8 +48,7 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            songAdapter.notifyDataSetChanged();
-//         progressDialog.dismiss();
+                songAdapter.notifyDataSetChanged();
         }
     };
     CharacterParser characterParser = new CharacterParser();
@@ -93,47 +92,10 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
             public void run() {
                     for (File initFile : convertFile) {
                         if (initFile!=null) {
-                            if(initFile.isDirectory()&&initFile.list().length>0) {
-                                scanFile(initFile);
-                            }
-                            if(initFile.isFile()){
-                                if (isMp3(initFile.getName())) {
-                                    Cursor cursor=existSong.rawQuery("select * from musicFolder",null);
-                                    if(cursor!=null) {
-                                        Cursor c = existSong.query("musicFolder", new String[]{"songName"}, "folderName=?", new String[]{initFile.getParentFile().getName()}, null, null, null);
-                                        if (c != null) {
-                                            while (c.moveToNext()){
-                                                if(initFile.getName().equals(c.getString(c.getColumnIndex("songName")))){
-                                                    FLAG=1;
-                                                }else {
-                                                    FLAG=-1;
-                                                }
-                                            }
-                                        } else {
-                                            ContentValues values = new ContentValues();
-                                            values.put("folderName", initFile.getParentFile().getName());
-                                            values.put("folderPath", initFile.getParent());
-                                            values.put("songName", initFile.getName());
-                                            values.put("songPath", initFile.getPath());
-                                            existSong.insert("musicFolder", null, values);
-                                            values.clear();
-                                        }
-                                    }
-                                    if(FLAG==-1) {
-                                        ContentValues values = new ContentValues();
-                                        values.put("folderName", initFile.getParentFile().getName());
-                                        values.put("folderPath", initFile.getParent());
-                                        values.put("songName", initFile.getName());
-                                        values.put("songPath", initFile.getPath());
-                                        existSong.insert("musicFolder", null, values);
-                                        values.clear();
-                                    }
-                                }
-                            }
+                            scanFile(initFile);
                         }
                     }
                 handler.sendEmptyMessage(1);
-
             }
         }.start();
         }
@@ -142,23 +104,14 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
         if(initFile.list().length>0) {
             File[] directories = initFile.listFiles();
             for (File file : directories) {
-                if (file.isDirectory() && file.list().length > 0){
-                    if (isMusicFile(file.getName())){
-                        scanFile(file);
-                    }
-                }
                 if (file.isFile()) {
+                    boolean FLAG = true;
                     if (isMp3(file.getName())) {
-                        Cursor c = existSong.query("musicFolder", new String[]{"songName"}, "folderName=?", new String[]{file.getParentFile().getName()}, null, null, null);
-                        if (c != null) {
-                            while (c.moveToNext()){
-                                if(file.getName().equals(c.getString(c.getColumnIndex("songName")))){
-                                    FLAG=1;
-                                }else {
-                                    FLAG=-1;
-                                }
-                            }
-                        } else {
+                        Log.d("走进了外面",file.getName());
+                        Cursor c =existSong.query("musicFolder", new String[]{"songName"}, "songName=?", new String[]{file.getName()}, null, null, null);
+                        if(c.getCount()>0){
+
+                        }else {
                             ContentValues values = new ContentValues();
                             values.put("folderName", file.getParentFile().getName());
                             values.put("folderPath", file.getParent());
@@ -166,16 +119,9 @@ public class SongsList extends Activity implements TextWatcher, ExpandableListVi
                             values.put("songPath", file.getPath());
                             existSong.insert("musicFolder", null, values);
                             values.clear();
+                            songAdapter.updateSongList(existSong);
+                            listView.invalidate();
                         }
-                    if(FLAG==-1) {
-                        ContentValues values = new ContentValues();
-                        values.put("folderName", file.getParentFile().getName());
-                        values.put("folderPath",file.getParent());
-                        values.put("songName",file.getName());
-                        values.put("songPath",file.getPath());
-                        existSong.insert("musicFolder", null, values);
-                        values.clear();
-                    }
                     }
                 }
             }

@@ -7,7 +7,8 @@ public class FileType {
     private int image;
     private String fileName;
     private int type;
-   static int TYPE_CHECKED=1;
+    private String filePath;
+    static int TYPE_CHECKED=1;
     static int TYPE_UNCHECKED=-1;
     public int getType() {
         return type;
@@ -24,8 +25,6 @@ public class FileType {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-
-    private String filePath;
 
     public String getFileName() {
         return fileName;

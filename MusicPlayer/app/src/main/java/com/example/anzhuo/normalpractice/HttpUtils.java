@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -13,11 +14,16 @@ import com.example.anzhuo.normalpractice.javabeans.SongAddress;
 
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 
 import okhttp3.Cache;
@@ -246,42 +252,37 @@ public class HttpUtils {
     }
 
     public static void downMp3(final String url, final String name, final Handler handler) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+             Log.d("download","已经进入下载方法中");
                 try {
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .build();
-                    Response response = mOkHttpClient.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        String path=MainApplication.cachePath +File.separator+ name + ".mp3";
-                        File file=new File(path);
-                        if(file.exists()){
-                            file.delete();
-                        }
-                        FileOutputStream fo = new FileOutputStream(file.getPath());
-                        byte[] c = new byte[1024];
-                        while (response.body().source().read(c) != -1) {
-                            fo.write(c);
-                        }
-                        handler.sendEmptyMessage(1);
+                    String path=MainApplication.downloadPath +File.separator+ name;
+                    File file=new File(path);
+                    if(file.exists()){
+                        file.delete();
+                    }
+                    URL urlString = new URL(url);
+                    URLConnection conn = urlString.openConnection();
+                    conn.setConnectTimeout(10000);
+
+                    InputStream is = conn.getInputStream();
+                    FileOutputStream fos = new FileOutputStream(file.getPath());
+                    int len = -1;
+                    byte[] cache = new byte[2*1024];
+                    while((len = is.read(cache))!= -1){
+                        fos.write(cache,0,len);
                     }
 
+                    fos.close();
+                    is.close();
+                    handler.sendEmptyMessage(1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
-
-
     }
 
     public static void postUrl(Context context, String j) {
         try {
             String action = "https://music.163.com/weapi/login/";
             RequestBody formBody =new FormBody.Builder()
-                    //         .add("",)
                     .build();
             Log.e("post", "p");
             Request request = new Request.Builder()
@@ -308,7 +309,7 @@ public class HttpUtils {
         }
     }
 
-    public static SongAddress postNetease(int id) {
+    public static void postNetease(int id,Handler handler) {
         try {
             String action = "http://music.163.com/weapi/song/enhance/player/url?csrf_token=";
             String []params=AES.getParams(id);
@@ -326,13 +327,11 @@ public class HttpUtils {
             Log.e("post",param+"&encSecKey="+params[1]);
             String json = "params="+param+"&encSecKey="+params[1];
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"),json);
-            Log.e("post", "p");
             Request request = new Request.Builder()
                     .url(action)
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .header("Host", "music.163.com")
                     .header("Cookie","appver=1.5.0.75771")
-//                    .header("Cookie", "_ntes_nnid=12dd97f23e25256a637e430a103e7946,1483775626317; _ntes_nuid=12dd97f23e25256a637e430a103e7946; usertrack=c+5+hlii6oAvjnlmBRpnAg==; JSESSIONID-WYYY=HequyPvM%2FTJgNhrTZJG229GNW61bGcJYWGhIGrM8IOsRDRhAOGj8cM5xQbwebNhEjGbhdybMzlKp%2BNklsqcjMAF%5CYXmj1FF3wPWob114POYycCUrQ8zFlr4PrIy4A3yWHFavxe89yA9zZvfa8KPR3JqS7MCRrk6v8jNQrblYV8yUoT4k%3A1487616860903; _iuqxldmzr_=32; __utma=94650624.921500120.1483775628.1487608101.1487615517.20; __utmb=94650624.8.10.1487615517; __utmc=94650624; __utmz=94650624.1486546268.12.4.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; playerid=60866064")
                     .header("Referer", "http://music.163.com/")
                     .header("Connection", "keep-alive")
                     .header("Accept-Encoding", "gzip,deflate")
@@ -348,7 +347,7 @@ public class HttpUtils {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 int length = -1;
 
-                byte[] cache = new byte[1024];
+                byte[] cache = new byte[10*1024];
 
                 while ((length = gzipInputStream.read(cache)) != -1) {
                     byteArrayOutputStream.write(cache, 0, length);
@@ -360,14 +359,17 @@ public class HttpUtils {
                 Log.e("post",result);
                 byteArrayOutputStream.close();
                 gzipInputStream.close();
-                return JSON.parseObject(result, SongAddress.class);
+                Message msg = new Message();
+                msg.what = 0;
+                msg.obj = JSON.parseObject(result, SongAddress.class);
+                handler.sendMessage(msg);
             }else{
                 Log.e("post","get nothing");
+                handler.sendEmptyMessage(-1);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
 

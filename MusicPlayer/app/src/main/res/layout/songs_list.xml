@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/white"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content" >
 <com.example.anzhuo.normalpractice.ClearEditText
     android:id="@+id/cet_search"
-    android:background="@null"
+    android:background="@color/grey"
     android:padding="8dp"
     android:drawablePadding="10dp"
     android:layout_width="match_parent"

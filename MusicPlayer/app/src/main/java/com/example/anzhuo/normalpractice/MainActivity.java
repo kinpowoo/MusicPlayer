@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -232,20 +233,28 @@ public class MainActivity extends Activity implements SeekBar.OnSeekBarChangeLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rb_chip_previous:
-                currentSongPosition -= 1;
-                if (currentSongPosition == 0) {
-                    currentSongPosition = songPathList.size() - 1;
+                if(songNameList.size()<=1){
+                    Toast.makeText(this,"已无更多歌曲!",Toast.LENGTH_SHORT).show();
+                }else {
+                    currentSongPosition -= 1;
+                    if (currentSongPosition == 0) {
+                        currentSongPosition = songPathList.size() - 1;
+                    }
+                    songPath = songPathList.get(currentSongPosition);
+                    songName = songNameList.get(currentSongPosition);
+                    handler.sendEmptyMessage(0);
+                    myService.previous(songPath);
+                    totalLength = MediaPlayerManager.mediaPlayer.getDuration();
+                    startAnimation();
                 }
-                songPath = songPathList.get(currentSongPosition);
-                songName = songNameList.get(currentSongPosition);
-                handler.sendEmptyMessage(0);
-                myService.previous(songPath);
-                totalLength = MediaPlayerManager.mediaPlayer.getDuration();
-                startAnimation();
                 break;
             case R.id.rb_chip_next:
-                nextSong();
-                startAnimation();
+                if(songNameList.size()<=1) {
+                    Toast.makeText(this, "已无更多歌曲!", Toast.LENGTH_SHORT).show();
+                }else {
+                    nextSong();
+                    startAnimation();
+                }
                 break;
             case R.id.ib_chip_back:
                 handler.removeCallbacks(timeTracker);

@@ -33,8 +33,8 @@ public class SongAdapter extends BaseExpandableListAdapter {
     Context context;
     SQLiteDatabase existSong;
     ImageButton deleteButton;
-    List<String> groupNameList=new ArrayList<>();
-    List<String> songNameList=new ArrayList<>();
+    List<String> groupNameList=new ArrayList<String>();
+    List<String> songNameList=new ArrayList<String>();
 
     Animation animation;
     float startX;
@@ -49,12 +49,13 @@ public class SongAdapter extends BaseExpandableListAdapter {
 
     public void updateSongList(SQLiteDatabase database){
         this.existSong=database;
+        getGroupList();
         notifyDataSetChanged();
     }
 
     public  void getGroupList(){
         groupNameList.clear();
-       Cursor cursor= existSong.query("musicFolder", new String[]{"folderName"}, "_id>?", new String[]{"0"}, "folderName", null, "_id");
+        Cursor cursor= existSong.query("musicFolder", new String[]{"folderName"}, "_id>?", new String[]{"0"}, "folderName", null, "_id");
         if(cursor!=null){
             while (cursor.moveToNext()){
                 String groupName=new String(cursor.getString(cursor.getColumnIndex("folderName")));
@@ -85,7 +86,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
     }
 
     public ArrayList<String> getSongPathList(String groupName){
-       ArrayList<String> returnSongList=new ArrayList<>();
+       ArrayList<String> returnSongList=new ArrayList<String>();
        Cursor cursor = existSong.query("musicFolder", new String[]{"songPath"}, "folderName=?", new String[]{groupName}, null, null,null);
        if(cursor!=null){
            while (cursor.moveToNext()){
@@ -153,6 +154,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
         ViewHolder1 viewHolder1;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.parent_item, null);
@@ -168,7 +170,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
         } else {
             viewHolder1.fold.setImageResource(R.drawable.fold);
         }
-
+//        convertView.invalidate();
         return convertView;
     }
 
@@ -207,6 +209,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
                 deleteItem(view,groupPosition,childPosition);
             }
         });
+//        convertView.invalidate();
         return convertView;
     }
 
